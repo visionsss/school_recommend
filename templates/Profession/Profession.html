@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block title %}
+专业
+{% endblock %}
+{% block content %}
+    <script type="text/javascript">
+    function reload() {
+        setTimeout(function(){
+            location.reload(true);
+        }, 500);
+    }
+    function change_search(){
+        var url = document.URL;
+        var search_text = document.getElementById('search').value;
+        var pre_index = url.search('search=(.*)&');
+        var next_index = url.search('&level_1');
+        var new_url = url.substr(0, pre_index) + 'search=' + search_text + url.substr(next_index, url.length);
+        window.location.replace(new_url);
+    }
+    function change_level_1(level_1){
+        var url = document.URL;
+        var pre_index = url.search('level_1=(.*)&');
+        var next_index = url.search('&level_2');
+        var new_url = url.substr(0, pre_index) + 'level_1=' + level_1 + url.substr(next_index, url.length);
+        window.location.replace(new_url);
+    }
+    function change_level_2(level_2){
+        var url = document.URL;
+        var pre_index = url.search('level_2=(.*)&');
+        var new_url = url.substr(0, pre_index) + 'level_2=' + level_2 + '&';
+        window.location.replace(new_url);
+    }
+    </script>
+    <div class="layui-container">
+        <div class="layui-col-sm10 layui-text" style="padding: 0% 2%">专业信息<br>
+            <div name="select_bar">
+                    <div class="layui-input-inline">
+                        <input type="text" id="search" name="search" placeholder="专业搜索" value="{{ search }}" class="layui-input">
+                    </div>
+                    <button class="layui-btn" lay-filter="*" lay-submit onclick="change_search()">搜索</button>
+                    <div class="layui-breadcrumb" lay-separator="-">
+                        <a>专业层次&nbsp;&nbsp;</a>
+                        <a style="cursor:pointer" onclick="change_level_1('')">全部&nbsp;&nbsp;</a>
+                        <a style="cursor:pointer" onclick="change_level_1('本科')">本科&nbsp;&nbsp;</a>
+                        <a style="cursor:pointer" onclick="change_level_1('专科（高职）')">专科（高职）</a>
+                    </div>
+                    <div class="layui-breadcrumb" lay-separator="-">
+                        <a>专业大类&nbsp;&nbsp;</a>
+                        <a style="cursor:pointer" onclick="change_level_2('')">全部&nbsp;&nbsp;</a>
+                        {% for level_2_name in level_2_name_set %}
+                            <a style="cursor:pointer" onclick="change_level_2('{{ level_2_name }}')">{{ level_2_name }}&nbsp&nbsp</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            <div name="table_div"><table class="layui-table layui-text" id="test" lay-filter="test">
+                <thead><tr>
+                    <td>类别</td><td>专业名称</td><td>专业热度</td>
+                </tr></thead>
+                <tbody>
+                    {% for data in data_list %}
+                        <tr>
+                            <td>{{ data.level_3 }}</td>
+                            <td><a target="_blank" href="/Profession/Profession_detail/{{ data.pk }}">{{ data.special_name }}</a></td>
+                            <td>{{ data.hot }}</td>
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table></div>
+            {#      页码      #}
+            <div style="margin-bottom: 4cm; margin-left: 2cm" id="page_contains">
+            <ul class="pagination">
+                {#  第一页  #}
+                <li><a href="?page=1" aria-label="Previous"><span aria-hidden="true">第一页</span></a></li>
+                {#    上一页    #}
+                {% if school_list.has_previous %}
+                <li><a href="?page={{ data_list.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">上一页</span></a></li>
+                {% else %}
+                <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">上一页</span></a></li>
+                {% endif %}
+                {#  disabled是当你的按钮不满足的时候不可以点击了#}
+                {% for i in page_range %}
+                    {% if current_num == i %}
+                    <li class="active"><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if data_list.has_next %}
+                <li><a href="?page={{ data_list.next_page_number }}" aria-label="Next"><span aria-hidden="true">下一页</span></a></li>
+                {% else %}
+                <li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">下一页</span></a></li>
+                {% endif %}
+                <li>
+                <a href="?page={{ last }}" aria-label="Next">
+                <span aria-hidden="true">最后一页</span>
+                </a>
+                </li>
+            </ul>
+            </div>
+
+
+        </div>
+            </div>
+        <div class="layui-col-sm2 layui-text">专业推荐<br>完成问卷调查专业推荐效果更佳<br><br>
+            <ul>
+                {% for profession_recommend in profession_recommend_list %}
+                    <a target="_blank" onclick="reload()" href="/Profession/Profession_detail/{{ profession_recommend.special_id }}">
+                        <li style="padding: 2% 0%; list-style-type: circle"  class="layui-text">{{ profession_recommend.special_name }} {{ profession_recommend.hot }}</li>
+                    </a>
+                {% endfor %}
+            </ul>
+        </div>
+        </div>
+    </div>
+{% endblock %}
+
+

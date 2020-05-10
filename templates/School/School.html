@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block title %}
+    院校信息
+{% endblock %}
+{% block content %}
+    <script type="text/javascript">
+        function change_province(s) {
+            var url = document.URL;
+            var next_index = url.search('province_id=');
+            var new_url = url.substr(0, next_index) + 'province_id=' + s + '&';
+            window.location.replace(new_url);
+        }
+    </script>
+    <div class="layui-text layui-col-sm10" style="margin-left: 9%">
+    <div name="select_bar">
+        <div class="layui-input-inline">
+            <input type="text" id="search" name="search" placeholder="院校搜索" value="{{ search }}" class="layui-input">
+        </div>
+        <button class="layui-btn" lay-filter="*" lay-submit onclick="function search_school() {
+            var url = document.URL;
+            var search_text = document.getElementById('search').value;
+            var pre_index = url.search('search=(.*)&');
+            var next_index = url.search('&province_id=');
+            var new_url = url.substr(0, pre_index) + 'search=' + search_text + url.substr(next_index, url.length);
+            window.location.replace(new_url);
+        }
+        search_school()">搜索</button>
+        <div class="layui-breadcrumb" lay-separator="-">
+            <a> 省份 </a>
+            <a style="cursor:pointer" onclick="change_province('')">全部&nbsp;&nbsp;</a>
+            {% for province in province_list %}
+                <a style="cursor:pointer" onclick="change_province({{ province.province_id }})">{{ province.province_name }}&nbsp;&nbsp;</a>
+            {% endfor %}
+        </div>
+    <table class="table">
+        <thead><tr>
+            <td>院校名称</td><td>省份</td><td>院校层次</td><td>院校类型</td><td>隶属部门</td><td>办学类型</td><td>985</td><td>211</td><td>双一流</td><td>热度</td>
+        </tr></thead>
+        {% for data in data_list %}
+            <tr>
+                <td><a target="_blank" href="/School/School_detail/{{ data.pk }}">{{ data.name }}</a></td>
+                <td>{{ data.province.province_name }}</td>
+                <td>{{ data.level_name }}</td>
+                <td>{{ data.type_name }}</td>
+                <td>{% if data.belong != 'nan' %}{{ data.belong }}{% endif %}</td>
+                <td>{{ data.nature_name }}</td>
+                <td>{% if data.f985 == 1 %}是{% endif %} </td>
+                <td>{% if data.f211 == 1 %}是{% endif %}</td>
+                <td>{% if data.dual_class_name == '双一流' %}是{% endif %}</td>
+                <td>{{ data.hot }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {#      页码      #}
+            <div style="margin-bottom: 4cm; margin-left: 3cm" id="page_contains">
+            <ul class="pagination">
+                {#  第一页  #}
+                <li><a href="?page=1" aria-label="Previous"><span aria-hidden="true">第一页</span></a></li>
+                {#    上一页    #}
+                {% if school_list.has_previous %}
+                <li><a href="?page={{ data_list.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">上一页</span></a></li>
+                {% else %}
+                <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">上一页</span></a></li>
+                {% endif %}
+                {#  disabled是当你的按钮不满足的时候不可以点击了#}
+                {% for i in page_range %}
+                    {% if current_num == i %}
+                    <li class="active"><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if data_list.has_next %}
+                <li><a href="?page={{ data_list.next_page_number }}" aria-label="Next"><span aria-hidden="true">下一页</span></a></li>
+                {% else %}
+                <li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">下一页</span></a></li>
+                {% endif %}
+                <li>
+                <a href="?page={{ last }}" aria-label="Next">
+                <span aria-hidden="true">最后一页</span>
+                </a>
+                </li>
+            </ul>
+            </div>
+    </div>
+    </div>
+{% endblock %}

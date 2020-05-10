@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}
+{{ special.special_name }}
+{% endblock %}
+
+{% block content %}
+    <div class="layui-container">
+        <div style="padding: 5% 30%" class="layui-text">
+            <h1>专业名称： {{ special.special_name }}</h1><br>
+            <h3 style="padding: 2% 0%">{{ special.level_1 }} (热度排名: {{ rank1 }})<br></h3>
+            <h3 style="padding: 2% 0%">专业大类： {{ special.level_2 }}  (热度排名: {{ rank2 }})<br></h3>
+            <h3 style="padding: 2% 0%">专业小类：{{ special.level_3 }}  (热度排名: {{ rank3 }})<br></h3>
+            <h3 style="padding: 2% 0%">所授学位：{{ special.degree }}<br></h3>
+            <h3 style="padding: 2% 0%">所读年限：{{ special.limit_year }}<br></h3>
+            <h3 style="padding: 2% 0%">专业热度：{{ special.hot }}<br></h3>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        {# 引入layui\jquery #}
+        <link rel="stylesheet" href="/static/layui/css/layui.css">
+        <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="/static/layui/layui.js"></script>
+        <link rel="stylesheet" type="text/css" href={% static  "bootstrap-3.3.7-dist/css/bootstrap.min.css" %}>
+        <script type="text/javascript" src={% static  "bootstrap-3.3.7-dist/js/bootstrap.min.js" %}></script>
+
+        {# 设置 #}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {#   网页标题    #}
+        <title>{% block title %}Title{% endblock %}</title>
+    </head>
+    <body style="overflow: scroll">
+        {% include 'header.html' %}
+
+        {% block content %}
+        {% endblock %}
+
+        {% include 'footer.html' %}
+        
+    </body>
+</html>

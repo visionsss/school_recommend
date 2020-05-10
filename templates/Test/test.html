@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}
+    问卷调查
+{% endblock %}
+{% block content %}
+    <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 30%">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form layui-form-pane" action="" method="post">
+                <div class="layui-form-item" style="padding: 0% 30%"> <div class="layui-form-mid layui-word-aux">{{ test_message }}</div></div>
+                    {% for question in question_list %}
+                        <div class="layui-row layui-col-space10 layui-form-item">
+                        <label class="layui-form-text">{{ question }}</label>
+                        <div class="layui-input-block">
+                        <input type="radio" checked name="{{ forloop.counter }}" value="1" title="是" />
+                        <input type="radio" name="{{ forloop.counter }}" value="0" title="否" />
+                        </div>
+                        </div>
+                    {% endfor %}
+                <div class="layui-form-item" style="padding: 20px 30%;"><button class="layui-btn">提交</button></div>
+            </form>
+        </div>
+    </div>
+    <script>
+    layui.use(['form'], function() {
+        form = layui.form;
+    })
+    </script>
+{% endblock %}

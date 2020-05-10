@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}
+    登录
+{% endblock %}
+{% block content %}
+<div class="layui-container fly-marginTop">
+  <div class="fly-panel fly-panel-user" pad20>
+    <div class="layui-tab layui-tab-brief" lay-filter="user">
+      <ul class="layui-tab-title">
+        <li class="layui-this">登录</li>
+        <li><a href="/User/register">注册</a></li>
+      </ul>
+      <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
+        <div class="layui-tab-item layui-show">
+          <div class="layui-form layui-form-pane">
+            <form method="post">
+              <div class="layui-form-item">
+                <label for="username" class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="username" name="username" value="{{ username }}" class="layui-input">
+                </div>
+                  <div class="layui-form-mid layui-word-aux">{{ username_error }}</div>
+              </div>
+              <div class="layui-form-item">
+                <label for="password" class="layui-form-label">密码</label>
+                <div class="layui-input-inline">
+                  <input type="password" id="password" name="password" value="{{ password }}" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">{{ password_error }}</div>
+              </div>
+              <div class="layui-form-item">
+                <button class="layui-btn" lay-filter="*" lay-submit>立即登录</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

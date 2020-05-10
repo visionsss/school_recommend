@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block title %}
+    院校信息
+{% endblock %}
+{% block content %}
+    <div name="info">
+        <form class="layui-form layui-form-pane" action="" method="post">
+            <div class="layui-form-item" style="padding: 0% 30%"> <div class="layui-form-mid layui-word-aux">{{ success_message }}</div></div>
+            <div class="layui-form-item">
+                <label for="province" class="layui-form-label">省份</label>
+                <div class="layui-input-inline">
+                    <select class="layui-select" style="width: fit-content" name="province" id="province" lay-filter="brickType"">
+                     <option value="11">北京市</option>
+                     <option value="12">天津市</option>
+                     <option value="13">河北省</option>
+                     <option value="14">山西省</option>
+                     <option value="15">内蒙古自治区</option>
+                     <option value="21">辽宁省</option>
+                     <option value="22">吉林省</option>
+                     <option value="23">黑龙江省</option>
+                     <option value="31">上海市</option>
+                     <option value="32">江苏省</option>
+                     <option value="33">浙江省</option>
+                     <option value="34">安徽省</option>
+                     <option value="35">福建省</option>
+                     <option value="36">江西省</option>
+                     <option value="37">山东省</option>
+                     <option value="41">河南省</option>
+                     <option value="42">湖北省</option>
+                     <option value="43">湖南省</option>
+                     <option value="44">广东省</option>
+                     <option value="45">广西壮族自治区</option>
+                     <option value="46">海南省</option>
+                     <option value="50">重庆市</option>
+                     <option value="51">四川省</option>
+                     <option value="52">贵州省</option>
+                     <option value="53">云南省</option>
+                     <option value="54">西藏自治区</option>
+                     <option value="61">陕西省</option>
+                     <option value="62">甘肃省</option>
+                     <option value="63">青海省</option>
+                     <option value="64">宁夏回族自治区</option>
+                     <option value="65">新疆维吾尔自治区</option>
+{#                     <option value="71">台湾省</option>#}
+                     <option value="81">香港特别行政区</option>
+                     <option value="82">澳门特别行政区</option>
+                 </select>
+             </div>
+                 <label for="subject_type" class="layui-form-label">类别</label>
+                 <div class="layui-input-inline">
+                 <select class="layui-select" style="width: fit-content" name="subject_type" id="subject_type">
+                     <option value="1">理科</option>
+                     <option value="2">文科</option>
+                     <option value="3">综合</option>
+                 </select>
+                 <div class="layui-form-mid layui-word-aux">{{ subject_type_error }}</div>
+                </div>
+                <label for="score" class="layui-form-label">分数</label>
+                <div class="layui-input-inline">
+                <input type="number" min="0" max="800" id="score" name="score" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">{{ score_error }}</div>
+
+                <button class="layui-btn">提交</button>
+            </div>
+        </form>
+    </div>
+    <div name="school_recommend" style="margin-left: 8%; margin-right: 8%">
+        <table class="table">
+        <thead><tr>
+            <td>院校名称</td><td>省份</td><td>办学类型</td><td>985</td><td>211</td><td>双一流</td><td>热度</td><td>预测分数</td><td>推荐指数</td>
+        </tr></thead>
+        {% for data in data_list %}
+            <tr>
+                <td><a target="_blank" href="/School/School_detail/{{ data.school_class.pk }}">{{ data.school_class.name }}</a></td>
+                <td>{{ data.school_class.province.province_name }}</td>
+                <td>{{ data.school_class.nature_name }}</td>
+                <td>{% if data.school_class.f985 == 1 %}是{% endif %} </td>
+                <td>{% if data.school_class.f211 == 1 %}是{% endif %}</td>
+                <td>{% if data.school_class.dual_class_name == '双一流' %}是{% endif %}</td>
+                <td>{{ data.school_class.hot }}</td>
+                <td>{{ data.predict_score }}</td>
+                <td>{{ data.recommend_score }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {#      页码      #}
+            <div style="margin-bottom: 4cm; margin-left: 3cm" id="page_contains">
+            <ul class="pagination">
+                {#  第一页  #}
+                <li><a href="?page=1" aria-label="Previous"><span aria-hidden="true">第一页</span></a></li>
+                {#    上一页    #}
+                {% if school_list.has_previous %}
+                <li><a href="?page={{ data_list.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">上一页</span></a></li>
+                {% else %}
+                <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">上一页</span></a></li>
+                {% endif %}
+                {#  disabled是当你的按钮不满足的时候不可以点击了#}
+                {% for i in page_range %}
+                    {% if current_num == i %}
+                    <li class="active"><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if data_list.has_next %}
+                <li><a href="?page={{ data_list.next_page_number }}" aria-label="Next"><span aria-hidden="true">下一页</span></a></li>
+                {% else %}
+                <li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">下一页</span></a></li>
+                {% endif %}
+                <li>
+                <a href="?page={{ last }}" aria-label="Next">
+                <span aria-hidden="true">最后一页</span>
+                </a>
+                </li>
+            </ul>
+            </div>
+    </div>
+<script>
+    layui.use(['form'], function() {
+        form=layui.form;
+        $("#username").val({{ user.username }});
+        $("#score").val({{ user.score }});
+        var select = 'dd[lay-value=' + {{ user.province.province_id }} + ']';
+        $('#province').siblings("div.layui-form-select").find('dl').find(select).click();
+        var select = 'dd[lay-value=' + {{ user.subject_type }} + ']';
+        $('#subject_type').siblings("div.layui-form-select").find('dl').find(select).click();
+        form.on('select(brickType)', function(data){   
+        var val=data.value;
+        console.info(val);
+        if(val==31 || val==33){
+            console.info('333');
+
+
+
+        }
+                       });
+        });
+</script>
+</script>
+{% endblock %}

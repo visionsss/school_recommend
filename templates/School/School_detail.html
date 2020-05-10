@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+<script>alert({{ school_detail_error }})</script>
+{% block title %}
+    {{ school_class.name }}
+{% endblock %}
+{% block content %}
+    <div class="layui-container">
+        <div class="layui-col-sm10 layui-text" name="school_info">院校详细信息<br>
+            <div class="layui-col-sm9">
+                <div class="layui-col-sm4"><img height="95%" width="95%" src="{{ school_class.logo }}"></div>
+                <div class="layui-col-sm4">
+                    <span>院校名称：{{ school_class.name }}</span><br>
+                    <span>所在省份：{{ school_class.province.province_name }}</span><br>
+                    <span>所在城市：{{ school_class.city }}</span><br>
+                    <span>所在地区：</span>
+                    {% if school_class.county != 'nan' %}
+                        <span>{{ school_class.county }} &nbsp;</span>
+                    {% endif %}
+                    <br>
+                    <span>办学类型：{{ school_class.nature_name }}</span><br>
+                    <span>院校层次：{{ school_class.level_name }}</span><br>
+                    <span>院校类别：{{ school_class.type_name }}</span><br>
+                    <span>隶属部门：{{ school_class.belong }}</span><br>
+                    {% if school_class.f985 == 1 %}
+                        <span>985 &nbsp;</span>
+                    {% endif %}
+                    {% if school_class.f211 == 1 %}
+                        <span>211 &nbsp;</span>
+                    {% endif %}
+                    {% if school_class.dual_class_name != 'nan' %}
+                        <span>{{ school_class.dual_class_name }} &nbsp;</span>
+                    {% endif %}
+                    <br>
+                    <span>院校热度：{{ school_class.hot }}</span><br>
+                </div>
+                <div class="layui-col-sm4">
+                <span>重点学科：{{ school_class.num_subject }}</span><br>
+                <span>硕士点：{{ school_class.num_master }}</span><br>
+                <span>博士点：{{ school_class.num_doctor }}</span><br>
+                <span>简称：{{ school_class.short }}</span><br>
+                <span>排名：{{ school_class.rank }}</span><br>
+                <span>email：{{ school_class.email }}</span><br>
+                <span>电话：{{ school_class.phone }}</span><br>
+                <span>地址：{{ school_class.address }}</span><br>
+                </div>
+                <div class="layui-col-sm12">
+                    <form method="post">
+                    <div class="layui-input-inline">
+                        <input type="text" id="search" name="search" placeholder="省份搜索" value="{{ search }}" class="layui-input">
+                    </div>
+                    <button class="layui-btn" lay-filter="*" lay-submit >搜索</button>
+                    </form>
+                    <table class="table" style="margin-bottom: 4cm">
+                        <thead><tr>
+                            <td>省份</td><td>时间</td><td>类别</td><td>分数</td>
+                        </tr></thead>
+                        <tbody>
+                            {% for foo in school_line %}
+                                <tr>
+                                <td>{{ foo.province.province_name }}</td>
+                                <td>{{ foo.year }}</td>
+                                    {% if foo.subject_type == '1' %}
+                                    <td>理科</td>
+                                    {% else %}
+                                    <td>文科</td>
+                                    {% endif %}
+                                <td>{{ foo.score }}</td>
+                                </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="layui-col-sm3">
+                <span>招生网站：<a href="{{ school_class.site }}">{{ school_class.site }}</a></span><br>
+                <span>建校时间：{{ school_class.create_date }}</span><br>
+                <span>面积：{{ school_class.area }}km²</span><br>
+            </div>
+        </div>
+        <div class="layui-col-sm2 layui-text" name="sim_school">相似院校<br><br>
+            <ul>
+                {% for sim_school in sim_school_list %}
+                    <a href="/School/School_detail/{{ sim_school.school_id }}">
+                        <li style="padding: 2% 0%; list-style-type: circle"  class="layui-text">{{ sim_school.name }} {{ sim_school.sim }}</li>
+                    </a>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
