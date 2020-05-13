@@ -3,7 +3,7 @@
     院校信息
 {% endblock %}
 {% block content %}
-    <div name="info">
+    <div name="info" style="margin-left: 3cm">
         <form class="layui-form layui-form-pane" action="" method="post">
             <div class="layui-form-item" style="padding: 0% 30%"> <div class="layui-form-mid layui-word-aux">{{ success_message }}</div></div>
             <div class="layui-form-item">
@@ -74,7 +74,7 @@
             <tr>
                 <td><a target="_blank" href="/School/School_detail/{{ data.school_class.pk }}">{{ data.school_class.name }}</a></td>
                 <td>{{ data.school_class.province.province_name }}</td>
-                <td>{{ data.school_class.nature_name }}</td>
+                <td>{% if data.school_class.nature_name != 'nan' %}{{ data.school_class.nature_name }}{% endif %}</td>
                 <td>{% if data.school_class.f985 == 1 %}是{% endif %} </td>
                 <td>{% if data.school_class.f211 == 1 %}是{% endif %}</td>
                 <td>{% if data.school_class.dual_class_name == '双一流' %}是{% endif %}</td>

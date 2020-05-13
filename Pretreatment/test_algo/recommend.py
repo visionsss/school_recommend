@@ -39,9 +39,11 @@ def draw(x1, y1, x2, y2, label):
     plt.rcParams['font.sans-serif'] = ['SimHei']
     plt.title(label)
     plt.xlabel('推荐院校数目n(个)', fontdict={'weight': 'normal', 'size': 15})
-    plt.ylabel('命中率hit rate(%)', fontdict={'weight': 'normal', 'size': 15})
-    plt.plot(x1, y1, marker='*')
-    plt.plot(x2, y2, marker='o')
+    plt.ylabel('命中率hit rate', fontdict={'weight': 'normal', 'size': 15})
+    # plt.plot(x1, y1, marker='*')
+    # plt.plot(x2, y2, marker='o')
+    plt.plot(x1, y1, LineWidth=3)
+    plt.plot(x2, y2, LineWidth=3)
     plt.legend(['理科', '文科'])
     plt.show()
 
@@ -60,7 +62,7 @@ def main():
         y[i] = utils.school_name_to_school_id(y[i])[0]
     plt_x1 = []
     plt_y1 = []
-    for k in range(0, 50, 5):
+    for k in range(0, 2005, 5):
         score = hit_score(k, y, pre_y)
         plt_x1.append(k)
         plt_y1.append(score)
@@ -75,7 +77,7 @@ def main():
         y[i] = utils.school_name_to_school_id(y[i])[0]
     plt_x2 = []
     plt_y2 = []
-    for k in range(0, 50, 5):
+    for k in range(0, 2005, 5):
         score = hit_score(k, y, pre_y)
         plt_x2.append(k)
         plt_y2.append(score)

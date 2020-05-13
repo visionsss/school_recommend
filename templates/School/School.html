@@ -43,7 +43,7 @@
                 <td>{{ data.level_name }}</td>
                 <td>{{ data.type_name }}</td>
                 <td>{% if data.belong != 'nan' %}{{ data.belong }}{% endif %}</td>
-                <td>{{ data.nature_name }}</td>
+                <td>{% if data.nature_name != 'nan' %}{{ data.nature_name }}{% endif %}</td>
                 <td>{% if data.f985 == 1 %}是{% endif %} </td>
                 <td>{% if data.f211 == 1 %}是{% endif %}</td>
                 <td>{% if data.dual_class_name == '双一流' %}是{% endif %}</td>

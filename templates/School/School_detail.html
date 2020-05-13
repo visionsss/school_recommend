@@ -17,7 +17,7 @@
                         <span>{{ school_class.county }} &nbsp;</span>
                     {% endif %}
                     <br>
-                    <span>办学类型：{{ school_class.nature_name }}</span><br>
+                    <span>办学类型：{% if school_class.nature_name != 'nan' %}{{ school_class.nature_name }}{% endif %}</span><br>
                     <span>院校层次：{{ school_class.level_name }}</span><br>
                     <span>院校类别：{{ school_class.type_name }}</span><br>
                     <span>隶属部门：{{ school_class.belong }}</span><br>
@@ -37,7 +37,7 @@
                 <span>重点学科：{{ school_class.num_subject }}</span><br>
                 <span>硕士点：{{ school_class.num_master }}</span><br>
                 <span>博士点：{{ school_class.num_doctor }}</span><br>
-                <span>简称：{{ school_class.short }}</span><br>
+                <span>简称：{% if school_class.short != 'nan' %}{{ school_class.short }}{% endif %}</span><br>
                 <span>排名：{{ school_class.rank }}</span><br>
                 <span>email：{{ school_class.email }}</span><br>
                 <span>电话：{{ school_class.phone }}</span><br>
