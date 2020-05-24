@@ -39,9 +39,9 @@ def login(request):
 
 
 def logout(request):
-    next_url = request.GET.get('next', '/')
+    # next_url = request.GET.get('next', '/')
     request.session.flush()
-    return redirect(next_url)
+    return redirect('/')
 
 
 @csrf_exempt

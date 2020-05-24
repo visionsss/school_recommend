@@ -6,6 +6,13 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def profession(request, search, level_1, level_2):
     def get_recommend_list():
         """获取推荐列表"""
+        def cal2(query):
+            max_hot = query[0].hot
+            min_hot = query[-1].hot
+            for i in range(len(query)):
+                query[i].hot = (query[i].hot - min_hot) / (max_hot - min_hot)
+            query.sort(key=lambda x: x.hot, reverse=True)
+            return query
         def cal(query, pre_special: models.Special):
             """计算"""
             max_hot = query[0].hot
@@ -33,7 +40,7 @@ def profession(request, search, level_1, level_2):
         res = list(models.Special.objects.order_by('-hot'))
         if request.session.get('username') is None or not models.User.objects.get(username=request.session.get('username')).people_type:
             if request.session.get('pre_special') is None:
-                pass
+               res = cal2(list(res))
             else:
                 res = cal(query=list(res), pre_special=models.Special.objects.get(special_id=request.session.get('pre_special')))
         else:
@@ -43,7 +50,7 @@ def profession(request, search, level_1, level_2):
                     if res[i].level_2 in dic[ch]:
                         res[i].hot = res[i].hot * score
             if request.session.get('pre_special') is None:
-                pass
+                res = cal2(list(res))
             else:
                 res = cal(query=list(res), pre_special=models.Special.objects.get(special_id=request.session.get('pre_special')))
         for i in res[:10]:
